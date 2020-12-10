@@ -1,0 +1,29 @@
+name: Deploy Application on Surge.sh
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Deploy_on_surge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v2
+      
+      - name: Setup Node JS
+        uses: actions/setup-node@v1
+      
+      - name: Install Yarn
+        run: yarn install
+
+      - name: Build React App
+        run: yarn build
+
+      - name: Setup Surge
+        run:  npm install -g surge
+
+      - name: Deploy with surge
+        run:  surge ./build project-01-expense-tracker.surge.sh --token ${{secrets.SURGE_TOKEN}}
